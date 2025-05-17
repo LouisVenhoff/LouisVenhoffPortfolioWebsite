@@ -4,6 +4,7 @@ import Header from './staticContent/header/header'
 import NavButton from './staticContent/header/navButton/navButton'
 import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom'
 import Home from './pages/home/home'
+import Project from './pages/project/project'
 
 function App() {
   
@@ -31,6 +32,7 @@ function App() {
           <Route path="/" element={renderHeader()}>
             <Route path="construction" element={<UnderConstruction/>}/>
             <Route path="home" element={<Home />}/>
+            <Route path="project" element={<Project />} />
           </Route>
         </Routes>
       </Router>

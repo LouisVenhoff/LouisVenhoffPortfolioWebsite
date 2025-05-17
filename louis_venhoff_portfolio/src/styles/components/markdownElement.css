@@ -1,0 +1,8 @@
+.markdownElement{
+    --markdown-dark-color: #0d1117;
+    
+    height: auto;
+    border-radius: var(--panel-border-radius);
+    background-color: var(--markdown-dark-color);
+    padding: 20px;
+}
