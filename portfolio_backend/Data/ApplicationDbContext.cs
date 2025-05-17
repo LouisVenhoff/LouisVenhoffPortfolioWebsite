@@ -11,6 +11,8 @@ namespace portfolio_backend.Data{
 
         public DbSet<Repository> Repositorys {get; set;}
 
+        public DbSet<Doc> Docs {get; set;}
+
     }
 
 }

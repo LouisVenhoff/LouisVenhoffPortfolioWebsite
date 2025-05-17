@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Net.Sockets;
 using Microsoft.AspNetCore.SignalR;
 
+
 namespace portfolio_backend.Models
 {
     public class Repository{
@@ -21,6 +22,8 @@ namespace portfolio_backend.Models
 
         [Required]
         public String CloneLink {get; set;}
+
+        public Doc? Doc {get; set;}
 
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using portfolio_backend.Data;
 
@@ -11,9 +12,11 @@ using portfolio_backend.Data;
 namespace portfolio_backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250516185843_AddDocTable")]
+    partial class AddDocTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +45,7 @@ namespace portfolio_backend.Migrations
                     b.HasIndex("RepositoryId")
                         .IsUnique();
 
-                    b.ToTable("Docs", (string)null);
+                    b.ToTable("Docs");
                 });
 
             modelBuilder.Entity("portfolio_backend.Models.Repository", b =>
@@ -63,7 +66,7 @@ namespace portfolio_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Repositorys", (string)null);
+                    b.ToTable("Repositorys");
                 });
 
             modelBuilder.Entity("portfolio_backend.Models.Doc", b =>
