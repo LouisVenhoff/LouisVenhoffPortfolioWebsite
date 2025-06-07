@@ -1,4 +1,4 @@
-import React, {JSX, ReactNode, useEffect, useState} from "react";
+import React, { ReactNode } from "react";
 import "../../styles/staticContent/header.css";
 import { Button, Drawer, Portal } from "@chakra-ui/react";
 import { GiHamburgerMenu } from "react-icons/gi";

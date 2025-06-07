@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../../styles/components/commitHeatmap.css";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Card, ProgressCircle } from "@chakra-ui/react";
-import { Button, ButtonGroup } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useQuery, gql } from "@apollo/client";
 import { ContributionCalendarWeek, ContributionCalendarDay } from "../../gql/graphql";
 

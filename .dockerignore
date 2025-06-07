@@ -1,0 +1,41 @@
+# Build artifacts
+bin/
+obj/
+
+# User-specific files
+*.user
+*.vspscc
+*.vssscc
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio files
+.vs/
+.vscode/
+
+# .NET secrets
+secrets.json
+
+# Node-related files (React-App, z. B. in ClientApp)
+**/node_modules/
+**/build/
+**/dist/
+**/.cache/
+
+# OS files
+*.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files (wenn lokal verwendet)
+.env
+.env.*
+
+# Docker-related
+docker-compose.override.yml

@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 import ProjectThumbnail from "../../components/projectThumbnail/projectThumbnail";
 import useDocument from "../../hooks/useDocument";
 import "../../styles/pages/projects/projects.css";
 import ContentHeader from "../../components/contentHeader/contentHeader";
 import useEnv from "../../hooks/useEnv";
+import Doc from "../../classes/doc";
 
 
 const Projects:React.FC = () => {
