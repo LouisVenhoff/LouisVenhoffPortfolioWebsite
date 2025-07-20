@@ -15,12 +15,7 @@ const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
     
     const [collapsed, setCollapsed] = useState<boolean>(true);
     
-    const containerDiv:Ref<HTMLElement> = useRef<HTMLElement>(null);
-    
     const tagsDiv:Ref<HTMLElement> = useRef<HTMLElement>(null);
-
-    const animationController = useAnimation();
-
 
     useEffect(() => {
         tagsDiv.current.addEventListener("mouseenter", () => {
