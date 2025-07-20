@@ -1,6 +1,5 @@
-import React, { JSX, useEffect, useRef, useState} from "react";
+import React, { JSX, Ref, useEffect, useRef, useState} from "react";
 import * as motion from "motion/react-client";
-import { useAnimation } from "motion/react";
 import { Badge } from "@chakra-ui/react";
 import Doc from "../../classes/doc";
 import "../../styles/components/tagDisplayStyle.css";
@@ -15,9 +14,12 @@ const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
     
     const [collapsed, setCollapsed] = useState<boolean>(true);
     
-    const tagsDiv:Ref<HTMLElement> = useRef<HTMLElement>(null);
+    const tagsDiv:Ref<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        
+        if(!tagsDiv.current) return;
+        
         tagsDiv.current.addEventListener("mouseenter", () => {
             decollapse();
         });
