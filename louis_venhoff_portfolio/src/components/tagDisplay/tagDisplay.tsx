@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useRef} from "react";
+import React, { JSX, useEffect, useRef, useState} from "react";
 import * as motion from "motion/react-client";
 import { useAnimation } from "motion/react";
 import { Badge } from "@chakra-ui/react";
@@ -12,9 +12,23 @@ type TagDisplayProps = {
 
 const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
 
+    
+    const [collapsed, setCollapsed] = useState<boolean>(true);
+    
     const tagsDiv:Ref<HTMLElement> = useRef<HTMLElement>(null);
 
     const animationController = useAnimation();
+
+
+    useEffect(() => {
+        tagsDiv.current.addEventListener("mouseenter", () => {
+            setCollapsed(false);
+        });
+
+        tagsDiv.current.addEventListener("mouseleave", () => {
+            setCollapsed(true);
+        });
+    }, []);
 
     
     const renderTagsCollapsedState = ():JSX.Element[] => {
@@ -70,7 +84,7 @@ const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
         <div className="flex flex-row">
             <div ref={tagsDiv}>
                 <motion.div animate={animationController} className="tag-display">
-                    {renderAllTags()}
+                    {collapsed ? renderTagsCollapsedState() : renderAllTags()}
                 </motion.div>
             </div>
         </div>
