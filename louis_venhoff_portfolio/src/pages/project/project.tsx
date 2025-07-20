@@ -1,4 +1,4 @@
-import React, { JSX, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/pages/project/project.css";
 import MarkdownElement from "../../components/markdownElement/markdownElement";
 import testMarkdown from "../../assets/test.md?raw";

@@ -1,6 +1,6 @@
 import React, { JSX } from "react";
 import "../../styles/components/contentHeader.css";
-import { Button, IconButton } from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import { HiChevronLeft } from "react-icons/hi";
 
 type ContentHeaderProps = {
