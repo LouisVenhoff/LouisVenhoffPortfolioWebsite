@@ -17,6 +17,8 @@
     "@uiw/react-markdown-preview": "^5.1.4",
     "dotenv": "^16.5.0",
     "graphql": "^16.10.0",
+    "motion": "^12.23.3",
+    "prettier": "^3.6.2",
     "react": "^19.0.0",
     "react-calendar-heatmap": "^1.10.0",
     "react-dom": "^19.0.0",
