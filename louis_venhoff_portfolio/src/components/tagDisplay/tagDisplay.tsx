@@ -17,7 +17,7 @@ const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
     const animationController = useAnimation();
 
     
-    const renderTags = ():JSX.Element[] => {
+    const renderTagsCollapsedState = ():JSX.Element[] => {
         if(!currentDoc) return [];
 
         let badges:JSX.Element[] = [];
@@ -38,11 +38,39 @@ const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
 
     }
 
+    const renderAllTags = ():JSX.Element => {
+        if(!currentDoc) return <></>;
+
+        let badges:JSX.Element[] = [];
+        let secondRowBadges:JSX.Element[] = [];
+
+        const alwaysVisibleTagCount = currentDoc.tags.length < 5 ? currentDoc.tags.length : 5;
+
+        for(let i = 0; i < currentDoc.tags.length; i++){
+            
+            if(i <= alwaysVisibleTagCount){
+                badges.push(<Badge key={i} maxW="sm" backgroundColor="#000000" color="teal">{currentDoc.tags[i]}</Badge>);
+            }
+            else{
+                secondRowBadges.push(<Badge key={i} maxW="sm" backgroundColor="#000000" color="teal">{currentDoc.tags[i]}</Badge>);
+            }
+        }
+        
+        return(<div className="tag-display--full-container">
+                <div className="tag-display"> 
+                    {badges}
+                </div>
+                <div className="tag-display">
+                    {secondRowBadges}
+                </div>
+                </div>);
+    }
+
     return(
         <div className="flex flex-row">
             <div ref={tagsDiv}>
-                <motion.div animate={animationController} transition={{repeat: Infinity, duration: 30, ease: "linear"}} className="flex gap-2">
-                    {renderTags()}
+                <motion.div animate={animationController} className="tag-display">
+                    {renderAllTags()}
                 </motion.div>
             </div>
         </div>
