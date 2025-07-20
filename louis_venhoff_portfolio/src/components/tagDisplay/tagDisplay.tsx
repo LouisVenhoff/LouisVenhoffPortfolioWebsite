@@ -15,6 +15,8 @@ const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
     
     const [collapsed, setCollapsed] = useState<boolean>(true);
     
+    const containerDiv:Ref<HTMLElement> = useRef<HTMLElement>(null);
+    
     const tagsDiv:Ref<HTMLElement> = useRef<HTMLElement>(null);
 
     const animationController = useAnimation();
@@ -22,11 +24,11 @@ const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
 
     useEffect(() => {
         tagsDiv.current.addEventListener("mouseenter", () => {
-            setCollapsed(false);
+            decollapse();
         });
 
         tagsDiv.current.addEventListener("mouseleave", () => {
-            setCollapsed(true);
+            collapse();
         });
     }, []);
 
@@ -52,6 +54,14 @@ const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
 
     }
 
+    const collapse = () => {
+        setCollapsed(true);
+    }
+
+    const decollapse = () => {
+        setCollapsed(false);
+    }
+
     const renderAllTags = ():JSX.Element => {
         if(!currentDoc) return <></>;
 
@@ -70,22 +80,22 @@ const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
             }
         }
         
-        return(<div className="tag-display--full-container">
-                <div className="tag-display"> 
-                    {badges}
-                </div>
-                <div className="tag-display">
-                    {secondRowBadges}
-                </div>
-                </div>);
+        return(<motion.div animate={{ height: 50, animationDuration: 100 }} className="tag-display--full-container">
+                    <div className="tag-display"> 
+                        {badges}
+                    </div>
+                    <div className="tag-display">
+                        {secondRowBadges}
+                    </div>
+                </motion.div>);
     }
 
     return(
         <div className="flex flex-row">
             <div ref={tagsDiv}>
-                <motion.div animate={animationController} className="tag-display">
+                <div className="tag-display">
                     {collapsed ? renderTagsCollapsedState() : renderAllTags()}
-                </motion.div>
+                </div>
             </div>
         </div>
     );
