@@ -16,10 +16,6 @@ const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
 
     const animationController = useAnimation();
 
-    useEffect(() => {
-        // setupAnimation((currentDoc?.tags.length ?? 0) > 5);
-    }, [currentDoc]);
-    
     
     const renderTags = ():JSX.Element[] => {
         if(!currentDoc) return [];
@@ -38,19 +34,8 @@ const TagDisplay:React.FC<TagDisplayProps> = ({currentDoc}) => {
             badges.push(<p className="tag-display--hidden-tag-count">{`+${hiddenTagCount}`}</p>);
         }
 
-        // calculateTagsDivSize(badges);
-
         return badges;
 
-    }
-
-    const setupAnimation = (enabled: boolean) => {
-        if(enabled){
-            animationController.start({x: ["0%", "-50%"]});
-        }
-        else{
-            animationController.start({x: 0});
-        }
     }
 
     return(
