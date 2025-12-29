@@ -46,7 +46,10 @@ const Header:React.FC<HeaderProps> = ({ children }) => {
                                 </Drawer.Title>
                             </Drawer.Header>
                             <Drawer.Body>
-                                {children}
+                                <div className="header-drawer--options">
+                                    {children}
+                                    <hr className="header-drawer--endline" />
+                                </div>
                             </Drawer.Body>
                         </Drawer.Content>
                     </Drawer.Positioner>
