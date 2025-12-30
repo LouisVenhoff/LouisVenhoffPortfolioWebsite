@@ -33,3 +33,7 @@ services:
 
 volumes:
   mysql-data:
+
+secrets:
+  github_pat:
+    external: true
