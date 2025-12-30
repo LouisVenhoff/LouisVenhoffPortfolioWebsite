@@ -13,6 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<SecretProvider>();
+
 builder.Services.AddSingleton<RepoUpdateService>();
 
 builder.Services.AddCors(options =>

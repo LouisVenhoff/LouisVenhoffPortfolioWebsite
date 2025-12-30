@@ -8,7 +8,7 @@ using portfolio_backend.Exceptions;
 namespace portfolio_backend.Services
 {
 
-    class SecretProvider : ISecretProvider
+    public class SecretProvider : ISecretProvider
     {
 
         private string githubPat = null;
