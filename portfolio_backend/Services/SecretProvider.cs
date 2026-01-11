@@ -38,11 +38,14 @@ namespace portfolio_backend.Services
 
         private string LoadGithubTokenFromSecrets()
         {
-            string secretPath = "/run/secrets/github_pat";
+            string secretPath = "/var/run/secrets/github_pat";
 
             if (File.Exists(secretPath))
             {
-                return File.ReadAllText(secretPath);
+
+                string pat = File.ReadAllText(secretPath);
+                Console.WriteLine("Pat:");
+                Console.WriteLine(pat);
             }
             else
             {
