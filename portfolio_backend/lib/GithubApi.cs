@@ -5,20 +5,27 @@ using NuGet.Packaging;
 using portfolio_backend.Exceptions;
 using portfolio_backend.Models;
 using System.Net.Http.Headers;
+using portfolio_backend.Interfaces;
+using portfolio_backend.Services;
 
-namespace portfolio_backend.Lib{
+namespace portfolio_backend.Services{
 
-    static class GithubApi {
+    public class GithubApi {
 
-        private static HttpClient client = new HttpClient();
+        private ISecretProvider secretProvider;
 
-        public static async Task<List<Repository>> FetchRepositorys(){
-    
+        public GithubApi(SecretProvider secretProvider)
+        {
+            this.secretProvider = secretProvider;
+        }
+
+        private HttpClient client = new HttpClient();
+
+        public async Task<List<Repository>> FetchRepositorys(){
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ReadAccessToken());
             client.DefaultRequestHeaders.UserAgent.Add(ProductInfoHeaderValue.Parse("LouisVenhoff"));
-            
             HttpResponseMessage response = await client.GetAsync("https://api.github.com/user/repos?perPage=100&page=1");
-            
+            Console.WriteLine(response);
             List<Repository> repositories = [];
 
             String rawJson = await response.Content.ReadAsStringAsync();
@@ -32,8 +39,8 @@ namespace portfolio_backend.Lib{
             return repositories;
         }
 
-        private static String ReadAccessToken(){
-            string? accessToken = Environment.GetEnvironmentVariable("GITHUB_ACCESS_TOKEN") ?? throw new GithubAuthException("GITHUB_ACCESS_TOKEN not found!");
+        private String ReadAccessToken(){
+            string? accessToken = this.secretProvider.GetGithubPat() ?? throw new GithubAuthException("GITHUB_ACCESS_TOKEN not found!");
             return accessToken;
         }
 

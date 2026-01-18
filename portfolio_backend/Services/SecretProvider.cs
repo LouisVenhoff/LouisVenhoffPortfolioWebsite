@@ -22,6 +22,7 @@ namespace portfolio_backend.Services
 
         public string GetGithubPat()
         {
+            Console.WriteLine("GetGithubPat called!");
             if (githubPat != null) return githubPat;
 
             if (env.IsDevelopment())
@@ -39,19 +40,26 @@ namespace portfolio_backend.Services
         private string LoadGithubTokenFromSecrets()
         {
             string secretPath = "/var/run/secrets/github_pat";
-
-            if (File.Exists(secretPath))
+            try
             {
+                if (File.Exists(secretPath))
+                {
 
-                string pat = File.ReadAllText(secretPath);
-                Console.WriteLine("Pat:");
-                Console.WriteLine(pat);
+                    string pat = File.ReadAllText(secretPath);
+                    return pat;
+                }
+                else
+                {
+                    throw new GithubAuthException("No secret for github personal acces token (github_pat) found!");
+                    return null;
+                }
             }
-            else
+            catch
             {
-                throw new GithubAuthException("No secret for github personal acces token (github_pat) found!");
-                return null;
+                Console.WriteLine("Error while reading Secrets");
+                throw new GithubAuthException("Error while opening secrets file");
             }
+            
         }
         
 

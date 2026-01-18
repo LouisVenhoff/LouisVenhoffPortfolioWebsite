@@ -15,6 +15,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<SecretProvider>();
 
+builder.Services.AddSingleton<GithubApi>();
+
 builder.Services.AddSingleton<RepoUpdateService>();
 
 builder.Services.AddCors(options =>
