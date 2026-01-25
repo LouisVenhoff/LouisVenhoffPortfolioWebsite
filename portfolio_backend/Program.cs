@@ -19,6 +19,8 @@ builder.Services.AddSingleton<GithubApi>();
 
 builder.Services.AddSingleton<RepoUpdateService>();
 
+builder.Services.AddHostedService<ContributionsService>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
