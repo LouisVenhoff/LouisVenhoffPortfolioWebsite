@@ -22,20 +22,32 @@ namespace portfolio_backend.Services{
         private HttpClient client = new HttpClient();
 
         public async Task<List<Repository>> FetchRepositorys(){
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ReadAccessToken());
-            client.DefaultRequestHeaders.UserAgent.Add(ProductInfoHeaderValue.Parse("LouisVenhoff"));
-            HttpResponseMessage response = await client.GetAsync("https://api.github.com/user/repos?perPage=100&page=1");
-            List<Repository> repositories = [];
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ReadAccessToken());
+                client.DefaultRequestHeaders.UserAgent.Add(ProductInfoHeaderValue.Parse("LouisVenhoff"));
+                HttpResponseMessage response = await client.GetAsync("https://api.github.com/user/repos?perPage=100&page=1");
+                List<Repository> repositories = [];
 
-            String rawJson = await response.Content.ReadAsStringAsync();
+                String rawJson = await response.Content.ReadAsStringAsync();
 
-            foreach(JObject obj in JArray.Parse(rawJson)){
-                if(obj["name"] == null) continue;
+                foreach (JObject obj in JArray.Parse(rawJson))
+                {
+                    if (obj["name"] == null) continue;
 
-                repositories.Add(new Repository(obj["name"]!.ToString(), obj["clone_url"]!.ToString()));
-            };
+                    repositories.Add(new Repository(obj["name"]!.ToString(), obj["clone_url"]!.ToString()));
+                }
+                ;
 
-            return repositories;
+                return repositories;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching data from Github");
+                Console.WriteLine(ex);
+                return [];
+            }
+            
         }
 
         private String ReadAccessToken(){
