@@ -3,6 +3,7 @@ using portfolio_backend.Services;
 using dotenv.net;
 using System;
 using portfolio_backend.Helpers;
+using portfolio_backend.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
