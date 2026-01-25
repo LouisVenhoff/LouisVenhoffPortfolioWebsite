@@ -11,7 +11,7 @@ type MarkdownElementProps = {
 const MarkdownElement:React.FC<MarkdownElementProps> = ({markdown}) => {
     return(
         <div className="markdownElement">
-            <MarkdownPreview source={markdown}/>
+            <MarkdownPreview source={markdown} wrapperElement={{"data-color-mode": "dark"}}/>
         </div>
     );
 }
