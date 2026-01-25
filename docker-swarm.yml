@@ -24,6 +24,8 @@ services:
       - target: 80
         published: 80
         mode: ingress
+    secrets:
+      - github_pat
     deploy:
       replicas: 1
       restart_policy:
@@ -31,3 +33,7 @@ services:
 
 volumes:
   mysql-data:
+
+secrets:
+  github_pat:
+    external: true

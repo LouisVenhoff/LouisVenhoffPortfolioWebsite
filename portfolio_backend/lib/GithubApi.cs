@@ -5,35 +5,53 @@ using NuGet.Packaging;
 using portfolio_backend.Exceptions;
 using portfolio_backend.Models;
 using System.Net.Http.Headers;
+using portfolio_backend.Interfaces;
+using portfolio_backend.Services;
 
-namespace portfolio_backend.Lib{
+namespace portfolio_backend.Services{
 
-    static class GithubApi {
+    public class GithubApi {
 
-        private static HttpClient client = new HttpClient();
+        private ISecretProvider secretProvider;
 
-        public static async Task<List<Repository>> FetchRepositorys(){
-    
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ReadAccessToken());
-            client.DefaultRequestHeaders.UserAgent.Add(ProductInfoHeaderValue.Parse("LouisVenhoff"));
-            
-            HttpResponseMessage response = await client.GetAsync("https://api.github.com/user/repos?perPage=100&page=1");
-            
-            List<Repository> repositories = [];
-
-            String rawJson = await response.Content.ReadAsStringAsync();
-
-            foreach(JObject obj in JArray.Parse(rawJson)){
-                if(obj["name"] == null) continue;
-
-                repositories.Add(new Repository(obj["name"]!.ToString(), obj["clone_url"]!.ToString()));
-            };
-
-            return repositories;
+        public GithubApi(SecretProvider secretProvider)
+        {
+            this.secretProvider = secretProvider;
         }
 
-        private static String ReadAccessToken(){
-            string? accessToken = Environment.GetEnvironmentVariable("GITHUB_ACCESS_TOKEN") ?? throw new GithubAuthException("GITHUB_ACCESS_TOKEN not found!");
+        private HttpClient client = new HttpClient();
+
+        public async Task<List<Repository>> FetchRepositorys(){
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ReadAccessToken());
+                client.DefaultRequestHeaders.UserAgent.Add(ProductInfoHeaderValue.Parse("LouisVenhoff"));
+                HttpResponseMessage response = await client.GetAsync("https://api.github.com/user/repos?perPage=100&page=1");
+                List<Repository> repositories = [];
+
+                String rawJson = await response.Content.ReadAsStringAsync();
+
+                foreach (JObject obj in JArray.Parse(rawJson))
+                {
+                    if (obj["name"] == null) continue;
+
+                    repositories.Add(new Repository(obj["name"]!.ToString(), obj["clone_url"]!.ToString()));
+                }
+                ;
+
+                return repositories;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching data from Github");
+                Console.WriteLine(ex);
+                return [];
+            }
+            
+        }
+
+        private String ReadAccessToken(){
+            string? accessToken = this.secretProvider.GetGithubPat() ?? throw new GithubAuthException("GITHUB_ACCESS_TOKEN not found!");
             return accessToken;
         }
 

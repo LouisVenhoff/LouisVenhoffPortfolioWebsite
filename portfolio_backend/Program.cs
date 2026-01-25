@@ -13,6 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<SecretProvider>();
+
+builder.Services.AddSingleton<GithubApi>();
+
 builder.Services.AddSingleton<RepoUpdateService>();
 
 builder.Services.AddCors(options =>
@@ -38,7 +42,7 @@ foreach(KeyValuePair<string, string> entry in DotEnv.Read()){
 }
 
 var connectionString = builder.Configuration.GetConnectionString("Default");
-Console.WriteLine(connectionString);
+
 builder.Services.AddDbContext<ApplicationDbContext>((options) => {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });

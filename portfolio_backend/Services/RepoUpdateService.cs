@@ -2,6 +2,7 @@ using portfolio_backend.Models;
 using portfolio_backend.Data;
 using portfolio_backend.Lib;
 using portfolio_backend.Classes;
+using portfolio_backend.Interfaces;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using System.Threading.Tasks;
 using GitRepo = LibGit2Sharp.Repository;
@@ -19,13 +20,21 @@ namespace portfolio_backend.Services{
 
         private IServiceScopeFactory _scopeFactory;
 
+        private ISecretProvider _secretProvider;
+
+        private GithubApi _githubApi;
+
         private LibGit2SharpWrapper gitWrapper;
 
-        public RepoUpdateService(IServiceScopeFactory scopeFactory)
+        public RepoUpdateService(IServiceScopeFactory scopeFactory, SecretProvider secretProvider, GithubApi githubApi)
         {
             this._scopeFactory = scopeFactory;
 
-            string? githubToken = Environment.GetEnvironmentVariable("GITHUB_ACCESS_TOKEN") ?? throw new GithubAuthException("GITHUB_ACCESS_TOKEN not found!");
+            this._secretProvider = secretProvider;
+
+            this._githubApi = githubApi;
+
+            string? githubToken = this._secretProvider.GetGithubPat();
             this.gitWrapper = new LibGit2SharpWrapper(githubToken);
         }
 
@@ -38,7 +47,7 @@ namespace portfolio_backend.Services{
                 var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var items = await dbContext.Repositorys.ToListAsync();
 
-                List<Repository> repoList = await GithubApi.FetchRepositorys();
+                List<Repository> repoList = await this._githubApi.FetchRepositorys();
                 try
                 {
                     foreach (Repository repo in repoList)
