@@ -42,7 +42,7 @@ foreach(KeyValuePair<string, string> entry in DotEnv.Read()){
 }
 
 var connectionString = builder.Configuration.GetConnectionString("Default");
-Console.WriteLine(connectionString);
+
 builder.Services.AddDbContext<ApplicationDbContext>((options) => {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });

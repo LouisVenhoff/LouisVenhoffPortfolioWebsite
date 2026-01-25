@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using portfolio_backend.Interfaces;
 using portfolio_backend.Exceptions;
+using System.Text.RegularExpressions;
 //using Microsoft.Extensions.Hosting;
 
 
@@ -22,7 +23,6 @@ namespace portfolio_backend.Services
 
         public string GetGithubPat()
         {
-            Console.WriteLine("GetGithubPat called!");
             if (githubPat != null) return githubPat;
 
             if (env.IsDevelopment())
@@ -46,7 +46,7 @@ namespace portfolio_backend.Services
                 {
 
                     string pat = File.ReadAllText(secretPath);
-                    return pat;
+                    return Regex.Replace(pat, @"\s+", "");;
                 }
                 else
                 {

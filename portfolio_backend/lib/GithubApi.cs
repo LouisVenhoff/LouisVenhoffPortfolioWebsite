@@ -25,7 +25,6 @@ namespace portfolio_backend.Services{
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", ReadAccessToken());
             client.DefaultRequestHeaders.UserAgent.Add(ProductInfoHeaderValue.Parse("LouisVenhoff"));
             HttpResponseMessage response = await client.GetAsync("https://api.github.com/user/repos?perPage=100&page=1");
-            Console.WriteLine(response);
             List<Repository> repositories = [];
 
             String rawJson = await response.Content.ReadAsStringAsync();
