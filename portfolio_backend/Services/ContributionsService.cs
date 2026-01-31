@@ -42,8 +42,8 @@ namespace portfolio_backend.Services
                             contributionCalendar {
                             weeks {
                                 contributionDays {
-                                date
-                                contributionCount
+                                    date
+                                    contributionCount
                                 }
                             }
                             }
@@ -55,7 +55,7 @@ namespace portfolio_backend.Services
                 var response = await this.client.SendQueryAsync<UserResponse>(request);
 
                 Console.WriteLine(response);
-                Console.WriteLine(response.Data.user);
+                Console.WriteLine(response.Data.user.contributionsCollection.contributionsCalendar);
 
                 // string rawJson = Newtonsoft.Json.JsonConvert.SerializeObject(response.Data, Newtonsoft.Json.Formatting.Indented);
                 //Console.WriteLine(rawJson);

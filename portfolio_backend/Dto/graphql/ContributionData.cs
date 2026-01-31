@@ -7,27 +7,27 @@ public class UserResponse
 
 public class User
 {
-    public ContributionsCollection contributionsCollection;
+    public ContributionsCollection contributionsCollection {get; set;}
 }
 
 public class ContributionsCollection
 {
-    public ContributionsCalendar contributionsCalendar;
+    public ContributionsCalendar contributionsCalendar {get; set;}
 }
 
 public class ContributionsCalendar
 {
-    public List<Week> weeks;
+    public List<Week> weeks {get; set;}
 }
 
 public class Week
 {
-    public List<ContributionDay> contributionsDays;
+    public List<ContributionDay> contributionsDays {get; set;}
 }
 
 public class ContributionDay
 {
-    public DateTime date;
-    public int contributionCount;
+    public DateTime date {get; set;}
+    public int contributionCount {get; set;}
 }
 
