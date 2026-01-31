@@ -4,6 +4,7 @@ using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
 using Newtonsoft.Json.Linq;
 using portfolio_backend.Interfaces;
+using portfolio_backend.Dto;
 
 
 namespace portfolio_backend.Services
@@ -32,32 +33,38 @@ namespace portfolio_backend.Services
 
         private async Task FetchData()
         {
-
-            var request = new GraphQLRequest
+            try
             {
-                Query = @"{
-                    user(login: 'LouisVenhoff') {
-                    contributionsCollection {
-                        contributionCalendar {
-                        weeks {
-                            contributionDays {
-                            date
-                            contributionCount
+                var request = new GraphQLRequest{
+                    Query = @"{
+                        user(login: ""LouisVenhoff"") {
+                        contributionsCollection {
+                            contributionCalendar {
+                            weeks {
+                                contributionDays {
+                                date
+                                contributionCount
+                                }
+                            }
                             }
                         }
                         }
-                    }
-                    }
-                }"
-            };
+                    }"
+                };
+            
+                var response = await this.client.SendQueryAsync<UserResponse>(request);
 
-            var response = await this.client.SendQueryAsync<dynamic>(request);
+                Console.WriteLine(response);
+                Console.WriteLine(response.Data.user);
 
-            Console.WriteLine(response);
-            Console.WriteLine(response);
-
-            string rawJson = Newtonsoft.Json.JsonConvert.SerializeObject(response.Data, Newtonsoft.Json.Formatting.Indented);
-            Console.WriteLine(rawJson);
+                // string rawJson = Newtonsoft.Json.JsonConvert.SerializeObject(response.Data, Newtonsoft.Json.Formatting.Indented);
+                //Console.WriteLine(rawJson);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            
             
         }
     }
