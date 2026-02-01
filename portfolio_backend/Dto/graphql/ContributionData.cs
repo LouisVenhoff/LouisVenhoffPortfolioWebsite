@@ -12,17 +12,17 @@ public class User
 
 public class ContributionsCollection
 {
-    public ContributionsCalendar contributionsCalendar {get; set;}
+    public ContributionCalendar contributionCalendar {get; set;}
 }
 
-public class ContributionsCalendar
+public class ContributionCalendar
 {
     public List<Week> weeks {get; set;}
 }
 
 public class Week
 {
-    public List<ContributionDay> contributionsDays {get; set;}
+    public List<ContributionDay> contributionDays {get; set;}
 }
 
 public class ContributionDay

@@ -5,6 +5,7 @@ using GraphQL.Client.Serializer.Newtonsoft;
 using Newtonsoft.Json.Linq;
 using portfolio_backend.Interfaces;
 using portfolio_backend.Dto;
+using portfolio_backend.Exceptions;
 
 
 namespace portfolio_backend.Services
@@ -40,12 +41,12 @@ namespace portfolio_backend.Services
                         user(login: ""LouisVenhoff"") {
                         contributionsCollection {
                             contributionCalendar {
-                            weeks {
-                                contributionDays {
-                                    date
-                                    contributionCount
+                                weeks {
+                                    contributionDays {
+                                        date
+                                        contributionCount
+                                    }
                                 }
-                            }
                             }
                         }
                         }
@@ -54,15 +55,15 @@ namespace portfolio_backend.Services
             
                 var response = await this.client.SendQueryAsync<UserResponse>(request);
 
-                Console.WriteLine(response);
-                Console.WriteLine(response.Data.user.contributionsCollection.contributionsCalendar);
+                // Console.WriteLine(response);
+                Console.WriteLine(response.Data.user.contributionsCollection.contributionCalendar.weeks[1].contributionDays[0].contributionCount);
 
                 // string rawJson = Newtonsoft.Json.JsonConvert.SerializeObject(response.Data, Newtonsoft.Json.Formatting.Indented);
                 //Console.WriteLine(rawJson);
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex);
+                throw new  GithubGraphQLException(ex.Message);
             }
             
             
