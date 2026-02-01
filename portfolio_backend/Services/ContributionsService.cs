@@ -3,9 +3,11 @@ using GraphQL;
 using GraphQL.Client.Http;
 using GraphQL.Client.Serializer.Newtonsoft;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 using portfolio_backend.Interfaces;
 using portfolio_backend.Dto;
 using portfolio_backend.Exceptions;
+using portfolio_backend.Models;
 
 
 namespace portfolio_backend.Services
@@ -17,13 +19,15 @@ namespace portfolio_backend.Services
 
         private GraphQLHttpClient client;
 
-        public ContributionsService(SecretProvider secretProvider)
+        private IServiceScopeFactory scopeFactory;
+
+        public ContributionsService(IServiceScopeFactory scopeFactory, SecretProvider secretProvider)
         {
 
             this.client = new GraphQLHttpClient("https://api.github.com/graphql", new NewtonsoftJsonSerializer());
             this.client.HttpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", secretProvider.GetGithubPat());
-            
-            
+            this.scopeFactory = scopeFactory;
+
         }
 
         protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -36,7 +40,8 @@ namespace portfolio_backend.Services
         {
             try
             {
-                var request = new GraphQLRequest{
+                var request = new GraphQLRequest
+                {
                     Query = @"{
                         user(login: ""LouisVenhoff"") {
                         contributionsCollection {
@@ -52,7 +57,7 @@ namespace portfolio_backend.Services
                         }
                     }"
                 };
-            
+
                 var response = await this.client.SendQueryAsync<UserResponse>(request);
 
                 // Console.WriteLine(response);
@@ -60,13 +65,27 @@ namespace portfolio_backend.Services
 
                 // string rawJson = Newtonsoft.Json.JsonConvert.SerializeObject(response.Data, Newtonsoft.Json.Formatting.Indented);
                 //Console.WriteLine(rawJson);
+
+                this.updateDatabase(response.Data.user.contributionsCollection.contributionCalendar.weeks);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                throw new  GithubGraphQLException(ex.Message);
+                throw new GithubGraphQLException(ex.Message);
             }
-            
-            
+        }
+
+        public async void updateDatabase(List<Week> data)
+        {
+            List<Contribution> contributionsSummary = [];
+
+            foreach (Week week in data)
+            {
+                foreach (ContributionDay day in week.contributionDays)
+                {
+                    Contribution test = new Contribution(day.date, day.contributionCount);
+                    Console.WriteLine(test);
+                }
+            }
         }
     }
 
