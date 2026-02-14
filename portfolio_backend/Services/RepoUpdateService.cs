@@ -199,6 +199,14 @@ namespace portfolio_backend.Services{
 
             foreach (string tag in configObject.Tags)
             {
+                
+                // if((Array.Find(doc.Tags, (string currentTag) => currentTag == tag))){
+                //     continue;
+                // };
+
+                Console.WriteLine(doc.Tags);
+
+                
                 doc.AddTag(tag);
             }
         }
