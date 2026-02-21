@@ -191,24 +191,27 @@ namespace portfolio_backend.Services{
             config = sr.ReadToEnd();
 
             JsonConfig configObject = JsonSerializer.Deserialize<JsonConfig>(config);
+            string[] persistedTags = JsonSerializer.Deserialize<string[]>(doc.Tags);
 
             if (configObject == null) return;
 
             doc.DocumentName = configObject.DocumentName;
             doc.Description = configObject.Description;
 
-            foreach (string tag in configObject.Tags)
-            {
-                
-                // if((Array.Find(doc.Tags, (string currentTag) => currentTag == tag))){
-                //     continue;
-                // };
+            //Console.WriteLine(persistedTags);
 
-                Console.WriteLine(doc.Tags);
+            // foreach (string tag in configObject.Tags)
+            // {
 
-                
-                doc.AddTag(tag);
-            }
+            //     if(Array.Find(persistedTags, (string currentTag) => currentTag == tag)){
+            //         continue;
+            //     };
+
+            //     Console.WriteLine(doc.Tags);
+
+
+            //     doc.AddTag(tag);
+            // }
         }
 
     }
