@@ -198,20 +198,31 @@ namespace portfolio_backend.Services{
             doc.DocumentName = configObject.DocumentName;
             doc.Description = configObject.Description;
 
-            //Console.WriteLine(persistedTags);
+            foreach (string tag in configObject.Tags)
+            {
+                Console.WriteLine(tag == "planning");
+                // if(Array.Find(persistedTags, (string currentTag) => currentTag == tag)){
+                //     continue;
+                // };
 
-            // foreach (string tag in configObject.Tags)
-            // {
+                bool found = false;
+                foreach (string persistedTag in persistedTags)
+                {
+                    if (persistedTag == tag)
+                    {
+                        found = true;
+                    }
+                }
 
-            //     if(Array.Find(persistedTags, (string currentTag) => currentTag == tag)){
-            //         continue;
-            //     };
+                if (found)
+                {
+                    continue;
+                }
 
-            //     Console.WriteLine(doc.Tags);
 
 
-            //     doc.AddTag(tag);
-            // }
+                doc.AddTag(tag);
+            }
         }
 
     }
