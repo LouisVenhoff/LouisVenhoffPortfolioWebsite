@@ -201,25 +201,9 @@ namespace portfolio_backend.Services{
             foreach (string tag in configObject.Tags)
             {
                 Console.WriteLine(tag == "planning");
-                // if(Array.Find(persistedTags, (string currentTag) => currentTag == tag)){
-                //     continue;
-                // };
-
-                bool found = false;
-                foreach (string persistedTag in persistedTags)
-                {
-                    if (persistedTag == tag)
-                    {
-                        found = true;
-                    }
-                }
-
-                if (found)
-                {
+                if(Array.Find(persistedTags, (string currentTag) => currentTag == tag) != null){
                     continue;
-                }
-
-
+                };
 
                 doc.AddTag(tag);
             }
