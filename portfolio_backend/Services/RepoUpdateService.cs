@@ -200,8 +200,7 @@ namespace portfolio_backend.Services{
 
             foreach (string tag in configObject.Tags)
             {
-                Console.WriteLine(tag == "planning");
-                if(Array.Find(persistedTags, (string currentTag) => currentTag == tag) != null){
+                if(persistedTags.Contains(tag)){
                     continue;
                 };
 
