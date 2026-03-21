@@ -191,6 +191,7 @@ namespace portfolio_backend.Services{
             config = sr.ReadToEnd();
 
             JsonConfig configObject = JsonSerializer.Deserialize<JsonConfig>(config);
+            string[] persistedTags = JsonSerializer.Deserialize<string[]>(doc.Tags);
 
             if (configObject == null) return;
 
@@ -199,6 +200,10 @@ namespace portfolio_backend.Services{
 
             foreach (string tag in configObject.Tags)
             {
+                if(persistedTags.Contains(tag)){
+                    continue;
+                };
+
                 doc.AddTag(tag);
             }
         }
