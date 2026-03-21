@@ -8,6 +8,7 @@ using portfolio_backend.Interfaces;
 using portfolio_backend.Dto;
 using portfolio_backend.Exceptions;
 using portfolio_backend.Models;
+using portfolio_backend.Data;
 
 
 namespace portfolio_backend.Services
@@ -83,9 +84,28 @@ namespace portfolio_backend.Services
                 foreach (ContributionDay day in week.contributionDays)
                 {
                     Contribution test = new Contribution(day.date, day.contributionCount);
-                    Console.WriteLine(test);
+                    this.persistContribution(test);
                 }
             }
+        }
+
+        private async void persistContribution(Contribution con)
+        {
+            DateTime time = con.time;
+            int count = con.Count;
+
+            using var scope = scopeFactory.CreateScope();
+            ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            List<Contribution> foundContributions = await dbContext.Contributions.Where(c => c.time == time).ToListAsync();
+
+            if (foundContributions.Count == 0)
+            {
+                dbContext.Contributions.Add(con);
+            }
+
+            await dbContext.SaveChangesAsync();
+            
         }
     }
 
