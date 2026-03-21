@@ -37,6 +37,19 @@ namespace portfolio_backend.Services
             this.FetchData();
         }
 
+        public async void UpdateDatabase(List<Week> data)
+        {
+            List<Contribution> contributionsSummary = [];
+
+            foreach (Week week in data)
+            {
+                foreach (ContributionDay day in week.contributionDays)
+                {
+                    this.PersistContribution(new Contribution(day.date, day.contributionCount));
+                }
+            }
+        }
+
         private async Task FetchData()
         {
             try
@@ -67,7 +80,7 @@ namespace portfolio_backend.Services
                 // string rawJson = Newtonsoft.Json.JsonConvert.SerializeObject(response.Data, Newtonsoft.Json.Formatting.Indented);
                 //Console.WriteLine(rawJson);
 
-                this.updateDatabase(response.Data.user.contributionsCollection.contributionCalendar.weeks);
+                this.UpdateDatabase(response.Data.user.contributionsCollection.contributionCalendar.weeks);
             }
             catch (Exception ex)
             {
@@ -75,21 +88,7 @@ namespace portfolio_backend.Services
             }
         }
 
-        public async void updateDatabase(List<Week> data)
-        {
-            List<Contribution> contributionsSummary = [];
-
-            foreach (Week week in data)
-            {
-                foreach (ContributionDay day in week.contributionDays)
-                {
-                    Contribution test = new Contribution(day.date, day.contributionCount);
-                    this.persistContribution(test);
-                }
-            }
-        }
-
-        private async void persistContribution(Contribution con)
+        private async void PersistContribution(Contribution con)
         {
             DateTime time = con.time;
             int count = con.Count;
@@ -102,6 +101,14 @@ namespace portfolio_backend.Services
             if (foundContributions.Count == 0)
             {
                 dbContext.Contributions.Add(con);
+            }
+            else if (foundContributions[0].Count != count)
+            {
+                foundContributions[0].Count = count;
+            }
+            else
+            {
+                return;
             }
 
             await dbContext.SaveChangesAsync();
