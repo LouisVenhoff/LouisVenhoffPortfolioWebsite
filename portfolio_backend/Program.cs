@@ -3,6 +3,7 @@ using portfolio_backend.Services;
 using dotenv.net;
 using System;
 using portfolio_backend.Helpers;
+using portfolio_backend.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,8 @@ builder.Services.AddSingleton<SecretProvider>();
 builder.Services.AddSingleton<GithubApi>();
 
 builder.Services.AddSingleton<RepoUpdateService>();
+
+builder.Services.AddHostedService<ContributionsService>();
 
 builder.Services.AddCors(options =>
 {
