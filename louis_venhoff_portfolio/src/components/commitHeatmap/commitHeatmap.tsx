@@ -3,47 +3,20 @@ import "../../styles/components/commitHeatmap.css";
 import CalendarHeatmap from "react-calendar-heatmap";
 import { Card, ProgressCircle } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
-import { useQuery, gql } from "@apollo/client";
-import { ContributionCalendarWeek, ContributionCalendarDay } from "../../gql/graphql";
-import useContribution from "../../hooks/useContribution";
+import useContribution, { Contribution } from "../../hooks/useContribution";
 
 type GuiCalendarDay = {
   date: string,
   count: number
 }
 
-
-const CONTRIBUTIONS_QUERY = gql`
-  {
-    user(login: "LouisVenhoff") {
-      contributionsCollection {
-        contributionCalendar {
-          weeks {
-            contributionDays {
-              date
-              contributionCount
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 const CommitHeatmap: React.FC = () => {
-  const { data, loading, error } = useQuery(CONTRIBUTIONS_QUERY);
 
   const { loadContributionList } = useContribution();
 
-  const [contributions, setContributions] = useState<GuiCalendarDay[]>([]);
-  const [firstCalendarDate, setFirstCalendarDate] = useState<string>("0");
-  const [lastCalendarDate, setLastCalendarDate] = useState<string>("0");
-
-  useEffect(() => {  
-    if(!loading && !error){
-      setContributions(generateContributionData(data.user.contributionsCollection.contributionCalendar.weeks));
-    }
-  },[loading, data, error]);
+  const [contributions, setContributions] = useState<Contribution[]>([]);
+  const [firstCalendarDate, setFirstCalendarDate] = useState<Date>(new Date());
+  const [lastCalendarDate, setLastCalendarDate] = useState<Date>(new Date());
 
   useEffect(() => {
     if(contributions.length > 0){
@@ -52,44 +25,45 @@ const CommitHeatmap: React.FC = () => {
     }
   }, [contributions]);
 
-  const generateContributionData = (weeks:ContributionCalendarWeek[]):GuiCalendarDay[] => {
-    
-    let guiContributionDays:GuiCalendarDay[] = [];
-    
-    for(let i = 0; i < weeks.length; i++){
-      
-      let contributionDays:ContributionCalendarDay[] = weeks[i].contributionDays;
-      
-      for(let j = 0; j < contributionDays.length; j++){
-        guiContributionDays.push({date: contributionDays[j].date, count: contributionDays[j].contributionCount });
-      }
-    }
+  useEffect(() => {
+    fetchContributions();
+  }, []);
 
-    return guiContributionDays;
+  const fetchContributions = async () => {
+    
+    const contributions:Contribution[] =  await loadContributionList();
+
+    setContributions(contributions);
   }
 
-  const findFirstCalendarDate = ():string => {
+  const findFirstCalendarDate = ():Date => {
     if(contributions.length === 0){
       throw "Error: Trying to load calendar without data!"
     }
 
-    return contributions[0].date;
+    return contributions[0].time;
   }
 
-  const findLastCalendarDate = ():string => {
+  const findLastCalendarDate = ():Date => {
     if(contributions.length === 0){
       throw "Error: Trying to load calendar without data!";
     }
 
-    return contributions[contributions.length -1].date;
+    return contributions[contributions.length -1].time;
   }
 
   const redirectToGithub = () => {
     window.open("https://github.com/LouisVenhoff");
   };
 
+  const convertToGuiCalendarDays = ():GuiCalendarDay[] => {
+
+    return contributions.map((c: Contribution) => { return {date: c.time.toString(), count: c.count}});
+
+  }
+
   const renderHeatmap = () => {
-    return loading ? (
+    return false ? (
       <ProgressCircle.Root value={null} size="sm">
         <ProgressCircle.Circle>
           <ProgressCircle.Track />
@@ -98,9 +72,9 @@ const CommitHeatmap: React.FC = () => {
       </ProgressCircle.Root>
     ) : (
       <CalendarHeatmap
-        startDate={new Date(firstCalendarDate)}
-        endDate={new Date(lastCalendarDate)}
-        values={contributions}
+        startDate={firstCalendarDate}
+        endDate={lastCalendarDate}
+        values={convertToGuiCalendarDays()}
         classForValue={(value) => {
           if (!value) {
             return "color-empty";
