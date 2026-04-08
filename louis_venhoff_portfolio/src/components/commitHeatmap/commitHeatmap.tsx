@@ -12,7 +12,7 @@ type GuiCalendarDay = {
 
 const CommitHeatmap: React.FC = () => {
 
-  const { loadContributionList } = useContribution();
+  const { loadContributionList, loading } = useContribution();
 
   const [contributions, setContributions] = useState<Contribution[]>([]);
   const [firstCalendarDate, setFirstCalendarDate] = useState<Date>(new Date());
@@ -57,13 +57,11 @@ const CommitHeatmap: React.FC = () => {
   };
 
   const convertToGuiCalendarDays = ():GuiCalendarDay[] => {
-
     return contributions.map((c: Contribution) => { return {date: c.time.toString(), count: c.count}});
-
   }
 
   const renderHeatmap = () => {
-    return false ? (
+    return loading ? (
       <ProgressCircle.Root value={null} size="sm">
         <ProgressCircle.Circle>
           <ProgressCircle.Track />
