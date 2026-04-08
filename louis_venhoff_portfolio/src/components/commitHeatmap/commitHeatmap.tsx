@@ -5,6 +5,7 @@ import { Card, ProgressCircle } from "@chakra-ui/react";
 import { Button } from "@chakra-ui/react";
 import { useQuery, gql } from "@apollo/client";
 import { ContributionCalendarWeek, ContributionCalendarDay } from "../../gql/graphql";
+import useContribution from "../../hooks/useContribution";
 
 type GuiCalendarDay = {
   date: string,
@@ -32,11 +33,13 @@ const CONTRIBUTIONS_QUERY = gql`
 const CommitHeatmap: React.FC = () => {
   const { data, loading, error } = useQuery(CONTRIBUTIONS_QUERY);
 
+  const { loadContributionList } = useContribution();
+
   const [contributions, setContributions] = useState<GuiCalendarDay[]>([]);
   const [firstCalendarDate, setFirstCalendarDate] = useState<string>("0");
   const [lastCalendarDate, setLastCalendarDate] = useState<string>("0");
 
-  useEffect(() => {
+  useEffect(() => {  
     if(!loading && !error){
       setContributions(generateContributionData(data.user.contributionsCollection.contributionCalendar.weeks));
     }
