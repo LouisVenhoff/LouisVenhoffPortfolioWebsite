@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../../../styles/staticContent/header.css";
 
 type NavButtonProps = {
@@ -6,10 +7,10 @@ type NavButtonProps = {
 };
 
 const NavButton:React.FC<NavButtonProps> = ({title, target}) => {
-    
+
     return(
             <div className="header-nav-button--background">
-                <a href={target}>{title}</a>
+                <Link to={`/${target}`}>{title}</Link>
             </div>
     );
 };
