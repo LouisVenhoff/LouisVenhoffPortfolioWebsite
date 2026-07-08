@@ -3,6 +3,24 @@ import Timeline, { TimelineItem } from "../../components/timeline/timeline";
 import "../../styles/pages/about/about.css";
 import portrait from "../../assets/Louis_LED.png";
 import { FaBolt, FaCode, FaGraduationCap, FaLaptopCode, FaBookOpen } from "react-icons/fa6";
+import { SiTypescript, SiJavascript, SiReact, SiRuby, SiRubyonrails, SiDotnet, SiCplusplus } from "react-icons/si";
+import { TbBrandCSharp } from "react-icons/tb";
+
+type TechIcon = {
+    icon: React.ReactNode;
+    name: string;
+};
+
+const techIcons: TechIcon[] = [
+    { icon: <SiTypescript color="#3178C6" />, name: "TypeScript" },
+    { icon: <SiJavascript color="#F7DF1E" />, name: "JavaScript" },
+    { icon: <SiReact color="#61DAFB" />, name: "React" },
+    { icon: <TbBrandCSharp color="#9B4F96" />, name: "C#" },
+    { icon: <SiRuby color="#CC342D" />, name: "Ruby" },
+    { icon: <SiRubyonrails color="#CC0000" />, name: "Ruby on Rails" },
+    { icon: <SiDotnet color="#512BD4" />, name: ".NET Core" },
+    { icon: <SiCplusplus color="#00599C" />, name: "C++" }
+];
 
 const timelineItems: TimelineItem[] = [
     {
@@ -56,19 +74,20 @@ const About: React.FC = () => {
                         <p className="about-intro--tagline">
                             Vom Elektroniker zum Softwareentwickler – mit Leidenschaft für moderne Webtechnologien.
                         </p>
+                        <div className="about--tech-icons">
+                            {techIcons.map(tech => (
+                                <div className="about-tech-icon--item" key={tech.name}>
+                                    {tech.icon}
+                                    <span className="about-tech-icon--label">{tech.name}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
                 <div className="about--sections">
                     <div className="about--section">
                         <h3 className="about-section--title">Mein Werdegang</h3>
                         <Timeline items={timelineItems} />
-                    </div>
-                    <div className="about--section">
-                        <h3 className="about-section--title">Mein Fokus</h3>
-                        <p className="about-section--text">
-                            Mein Schwerpunkt liegt auf der modernen Webentwicklung. Ich arbeite regelmäßig mit Technologien wie React.js,
-                            Node.js und JavaScript, um performante und benutzerfreundliche Anwendungen zu entwickeln.
-                        </p>
                     </div>
                     <div className="about--section">
                         <h3 className="about-section--title">Motivation</h3>
