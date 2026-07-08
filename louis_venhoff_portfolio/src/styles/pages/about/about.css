@@ -1,0 +1,92 @@
+.about--main{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.about--content{
+    --content-gap: 2rem;
+
+    width: 90%;
+    max-width: 60rem;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--content-gap);
+    padding-block-end: 2rem;
+}
+
+.about--hero{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.about--portrait{
+    flex-shrink: 0;
+    border-radius: var(--panel-border-radius);
+    overflow: hidden;
+    background-color: #202020;
+    box-shadow: 0px 0px 9px 0px #202020;
+}
+
+.about-portrait--image{
+    width: 12rem;
+    aspect-ratio: 0.75;
+    object-fit: cover;
+    display: block;
+}
+
+.about-intro--name{
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-block-end: 0.5rem;
+}
+
+.about-intro--tagline{
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.about--sections{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.about--section{
+    background-color: #202020;
+    border-radius: var(--panel-border-radius);
+    padding: 1.5rem;
+}
+
+.about-section--title{
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-block-end: 0.75rem;
+}
+
+.about-section--text{
+    line-height: 1.6;
+}
+
+@media screen and (max-width: 600px){
+
+    .about--hero{
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .about-portrait--image{
+        width: 9rem;
+    }
+
+    .about--section{
+        padding: 1rem;
+    }
+}
