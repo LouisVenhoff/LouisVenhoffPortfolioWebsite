@@ -78,15 +78,15 @@ namespace portfolio_backend.Services{
             var items = await dbContext.Repositorys.ToListAsync();
 
 
-            try
+            if (Directory.Exists("/var/portfolio") == false)
             {
-                if (Directory.Exists("/var/portfolio") == false)
-                {
-                    Console.WriteLine("Creating folder for repositorys");
-                    DirectoryInfo dirInfo = Directory.CreateDirectory("/var/portfolio");
-                }
+                Console.WriteLine("Creating folder for repositorys");
+                DirectoryInfo dirInfo = Directory.CreateDirectory("/var/portfolio");
+            }
 
-                foreach (Repository repo in items)
+            foreach (Repository repo in items)
+            {
+                try
                 {
                     if (Directory.Exists($"/var/portfolio/{repo.Id}"))
                     {
@@ -101,15 +101,13 @@ namespace portfolio_backend.Services{
                         this.gitWrapper.Clone(repo.CloneLink, $"/var/portfolio/{repo.Id}");
                     }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"There was an Error pulling {repo.Name}! {e.Message}");
+                }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine($"There was an Error! {e.Message}");
-            }
-            finally
-            {
-                this.SeachForDocs(items);
-            }
+
+            this.SeachForDocs(items);
 
 
         }
