@@ -16,7 +16,7 @@ WORKDIR /app
 COPY ["louis_venhoff_portfolio/package*.json", "./"]
 RUN npm install
 
-ENV VITE_API_URL=http://digitaldevdreams.site
+ENV VITE_API_URL=http://venhoff.org
 ENV VITE_GITHUB_PAT=
 
 COPY ["louis_venhoff_portfolio", "./"]

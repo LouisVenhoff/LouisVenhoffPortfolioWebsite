@@ -4,7 +4,7 @@ namespace portfolio_backend.Helpers
     {
         public static string[] GetAllowedOrigins()
         {
-            return ["http://digitaldevdreams.site", "http://87.106.127.217"];
+            return ["http://venhoff.org", "https://venhoff.org"];
         }
     }
 }
