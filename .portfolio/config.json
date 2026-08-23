@@ -1,0 +1,5 @@
+{
+  "DocumentName": "Automatic Portfolio Website",
+  "Description": "A self-updating portfolio site: a .NET backend pulls all of Louis Venhoff's GitHub repos and turns any repo with a .portfolio folder into a project entry, rendered by a React frontend.",
+  "Tags": ["React", "TypeScript", "C#", ".NET 8", "Entity Framework Core", "GraphQL", "GitHub API", "Docker"]
+}
